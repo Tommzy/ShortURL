@@ -1,6 +1,17 @@
 /**
  * Created by Tommzy on 10/29/2015.
  */
+
+function shrinkHttpAddress(url){
+    var str = url;
+    if (str.indexOf('http://') == 0 ){
+        str = str.replace('http://','');
+    }
+    if (str.indexOf('https://') == 0 ){
+        str = str.replace('https://','');
+    }
+    return str;
+}
 pageRouter.controller('urlController', function($scope,$location,urlService) {
     /*
      alert functions
@@ -12,16 +23,11 @@ pageRouter.controller('urlController', function($scope,$location,urlService) {
     /*
      url variables
      */
-    var local = $location.absUrl().replace('http://', '');
-    local = local.replace('https://','');
+    var local = shrinkHttpAddress($location.absUrl());
     $scope.newURL = local.substring(0, local.length - 1);
     $scope.submitURL = function(nu){
-        var url;
-        if (nu.indexOf('http://') != 0 || nu.indexOf('https://')!= 0 ) {
-            url = "http://" + nu;
-        }else {
-            url = nu.replace('https://','http://');
-        }
+        var url = shrinkHttpAddress(nu);
+        url = "http://" + url;
         var urlPromise= urlService.addURL(url);
         urlPromise.then(function(data){
             $scope.newURL = local + data;
