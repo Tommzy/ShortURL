@@ -13,13 +13,14 @@ pageRouter.controller('urlController', function($scope,$location,urlService) {
      url variables
      */
     var local = $location.absUrl().replace('http://', '');
+    local = local.replace('https://','');
     $scope.newURL = local.substring(0, local.length - 1);
     $scope.submitURL = function(nu){
         var url;
-        if (nu.indexOf('http://') != 0) {
+        if (nu.indexOf('http://') != 0 || nu.indexOf('https://')!= 0 ) {
             url = "http://" + nu;
         }else {
-            url = nu;
+            url = nu.replace('https://','http://');
         }
         var urlPromise= urlService.addURL(url);
         urlPromise.then(function(data){
@@ -36,7 +37,9 @@ pageRouter.controller('urlController', function($scope,$location,urlService) {
             if(data == null) {
                 $scope.alerts.push({ type: 'info', msg: 'Not valid short url, please double check and try again!'});
             } else {
-                $scope.newURL = data.replace('http://', '');
+                var purl = data.replace('http://', '');
+                purl = purl.replace('https://', '');
+                $scope.newURL = purl;
             }
         }, function(error) {
             console.log("Get url Error: "+error);
