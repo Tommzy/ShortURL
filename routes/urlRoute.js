@@ -92,6 +92,11 @@ router.route('/:urlcode')
                 res.writeHead(302, {
                     'Location': urlEntity.url
                 });
+            }else {
+                var fullUrl = req.protocol + '://' + req.get('host');
+                res.writeHead(302, {
+                    'Location': fullUrl
+                });
             }
             res.end();
         });
