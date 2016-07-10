@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="pageRouter">
+<head>
+	<meta charset="UTF-8">
+	<script src="libs/angular/angular.js"></script>
+	<script src="libs/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+	<script src="libs/angular-route/angular-route.js"></script>
+	<script src="libs/angular-animate/angular-animate.js"></script>
+	<script src="js/routers/pageRouter.js"></script>
+	<script src="js/services/urlService.js"></script>
+	<script src="js/controllers/urlController.js"></script>
+	<link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="libs/angular-bootstrap/ui-bootstrap.js">
+	<link rel="stylesheet" href="libs/font-awesome/css/font-awesome.css">
+	<link rel="stylesheet" href="css/style.css">
+	<title>YSL - Your Short URL</title>
+</head>
+<body ng-controller="urlController">
+<div class="page-header">
+	<h1>Short URL Generater <small>Beta3.14</small></h1>
+</div>
+<div class="jumbotron text-center">
+	<div class="input-group">
+		<span class="input-group-addon" >http://</span>
+		<input type="text" class="form-control" aria-describedby="basic-addon3" ng-model="newURL">
+		<span class="input-group-btn">
+			<button class="btn btn-default" type="button" ng-click="submitURL(newURL)">Generate Short URL</button>
+			<button class="btn btn-default" type="button" ng-click="parseURL(newURL)">Parse Short URL</button>
+		</span>
+	</div>
+	<uib-alert class="alert alert-info" ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout = "1000"
+			   close="closeAlert($index)">
+		{{alert.msg}}
+	</uib-alert>
+</div>
+</body>
+</html>
