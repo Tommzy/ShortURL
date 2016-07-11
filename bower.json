@@ -13,6 +13,7 @@
     "ui-select": "angular-ui-select#~0.13.2",
     "angular-xeditable": "~0.1.9",
     "textAngular": "~1.4.6",
-    "angular-bootstrap-show-errors": "~2.3.0"
+    "angular-bootstrap-show-errors": "~2.3.0",
+    "validate": "validate.js#~0.10.0"
   }
 }

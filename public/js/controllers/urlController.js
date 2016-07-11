@@ -1,18 +1,7 @@
 /**
  * Created by Tommzy on 10/29/2015.
  */
-
-function shrinkHttpAddress(url){
-    var str = url;
-    if (str.indexOf('http://') == 0 ){
-        str = str.replace('http://','');
-    }
-    if (str.indexOf('https://') == 0 ){
-        str = str.replace('https://','');
-    }
-    return str;
-}
-pageRouter.controller('urlController', function($scope,$location,urlService) {
+pageRouter.controller('urlController', function($scope,$location,$sce,urlService) {
     /*
      alert functions
      */
@@ -21,13 +10,20 @@ pageRouter.controller('urlController', function($scope,$location,urlService) {
         $scope.alerts.splice(index, 1);
     };
     /*
+     validate url function
+     */
+    $scope.validateURL = function() {
+        $scope.isDisabled = !validator.isURL($scope.newURL.toString(),{require_protocol : true});
+    };
+    /*
      url variables
      */
-    var local = shrinkHttpAddress($location.absUrl());
+    var local = $location.absUrl();
     $scope.newURL = local.substring(0, local.length - 1);
+    $scope.tips = $sce.trustAsHtml('<span class="glyphicon glyphicon-search" ' +
+        'aria-hidden="true"></span> Please input valid url. E.g. http://www.google.com');
     $scope.submitURL = function(nu){
-        var url = shrinkHttpAddress(nu);
-        url = "http://" + url;
+        var url = nu;
         var urlPromise= urlService.addURL(url);
         urlPromise.then(function(data){
             $scope.newURL = local + data;
@@ -35,6 +31,7 @@ pageRouter.controller('urlController', function($scope,$location,urlService) {
             console.log("Get url Error: "+error);
         });
     };
+    $scope.isDisabled = !validator.isURL($scope.newURL.toString());
     $scope.parseURL = function(nu){
         var urlSlice = nu.split("/");
         var key = urlSlice[urlSlice.length - 1];
@@ -43,9 +40,7 @@ pageRouter.controller('urlController', function($scope,$location,urlService) {
             if(data == null) {
                 $scope.alerts.push({ type: 'info', msg: 'Not valid short url, please double check and try again!'});
             } else {
-                var purl = data.replace('http://', '');
-                purl = purl.replace('https://', '');
-                $scope.newURL = purl;
+                $scope.newURL = data;
             }
         }, function(error) {
             console.log("Get url Error: "+error);
