@@ -1,7 +1,7 @@
 /**
  * Created by Tommzy on 11/11/2015.
  */
-pageRouter.service('urlService', function ($http, $rootScope, $timeout) {
+pageRouter.service('urlService', function ($http) {
     return {
         getURL:function (shortURL) {
             //the data bind on the scope
