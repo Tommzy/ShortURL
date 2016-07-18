@@ -14,7 +14,7 @@ function str10to62(num) {
     var res = "";
     while (num != 0 || res.length < lengthOfUrl) {
         res = dictArray[(num % 62)] + res;
-        num = Math.round(num / 62);
+        num = Math.floor(num / 62);
     }
     return res;
 }
@@ -23,7 +23,8 @@ function str62to10(num) {
     var strNum = new String(num);
     var numLength = strNum.length;
     var res = 0;
-    for (var i = 0; i < numLength; i++) {
+    var i;
+    for (i = 0; i < numLength; i++) {
         res += Math.pow(62, numLength - i - 1) * dictArray.indexOf(strNum.charAt(i));
     }
     console.log("Translated to 10-bites: " + res);
@@ -72,6 +73,16 @@ router.route('/getURL')
     .get(function(req,res){
         var id = str62to10(req.query.shortURL);
         URL.findOne({id : id},function(err,url){
+            if (err) {
+                console.log("getURL errored: " + err);
+                res.json(JSON.stringify(err));
+            }
+            res.json(url);
+        });
+    });
+router.route('/getAllURL')
+    .get(function(req,res){
+        URL.find({},function(err,url){
             if (err) {
                 console.log("getURL errored: " + err);
                 res.json(JSON.stringify(err));
